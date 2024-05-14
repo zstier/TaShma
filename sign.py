@@ -24,27 +24,25 @@ while graphs > 0:
 		graphs -= 1
 		print("seed =", seed)
 		random.seed(seed)
+		S = sample(range(n), n//2) # choose the indices of g to be -1
+		g = [1,]*n # construct g
+		for i in S: # construct g
+			g[i] = -1
+		# fix an ordering of G's edges (for ease of permuting); construct f
+		E = list(nx.to_edgelist(G))
+		edge_to_index = {}
+		index_to_edge = {}
+		f = {}
+		for i in range(len(E)):
+			e0 = E[i][0]
+			e1 = E[i][1]
+			edge_to_index[(e0,e1)] = i
+			edge_to_index[(e1,e0)] = i
+			index_to_edge[i] = (e0,e1)
+			f[(e0,e1)] = g[e0]*g[e1]
+			f[(e1,e0)] = g[e0]*g[e1]
 		count_Ramanujan_signings = 0
 		for _ in range(trials):
-			S = sample(range(n), n//2) # choose the indices of g to be -1
-			g = [1,]*n # construct g
-			for i in S: # construct g
-				g[i] = -1
-			
-			# fix an ordering of G's edges (for ease of permuting); construct f
-			E = list(nx.to_edgelist(G))
-			edge_to_index = {}
-			index_to_edge = {}
-			f = {}
-			for i in range(len(E)):
-				e0 = E[i][0]
-				e1 = E[i][1]
-				edge_to_index[(e0,e1)] = i
-				edge_to_index[(e1,e0)] = i
-				index_to_edge[i] = (e0,e1)
-				f[(e0,e1)] = g[e0]*g[e1]
-				f[(e1,e0)] = g[e0]*g[e1]
-			
 			edge_count = list(range(n*d//2))
 			shuffle(edge_count) # permute edges
 					
