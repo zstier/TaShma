@@ -32,7 +32,7 @@ while graphs > 0:
 		for i in S: # construct g
 			g[i] = -1
 		# fix an ordering of G's edges (for ease of permuting); construct f
-		E = list(nx.to_edgelist(G))
+		E = list(nx.to_edgelist(G,nodelist=range(n)))
 		edge_to_index = {}
 		index_to_edge = {}
 		f = {}
@@ -57,7 +57,7 @@ while graphs > 0:
 				i = edge_to_index[(e0,e1)]
 				j = edge_count[i] # apply the permutation
 				(f0,f1) = index_to_edge[j]
-				# assert(A[e0][e1] == 1)
+				assert(A[e0][e1] == 1)
 				A[e0][e1] = f[(f0,f1)]
 				A[e1][e0] = f[(f0,f1)]
 			
