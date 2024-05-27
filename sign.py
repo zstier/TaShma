@@ -18,12 +18,12 @@ trials = 1000 # how many signings to consider
 seed = 0 # starting seed value
 percents = []
 
-def is_Ramanujan(G, d):
+def is_Ramanujan(G):
 	return sorted(nx.adjacency_spectrum(G),reverse=True)[1] <= Ramanujan_bound
 
 while graphs > 0:
 	G = nx.random_regular_graph(d, n, seed=seed)
-	if is_Ramanujan(G, d):
+	if is_Ramanujan(G):
 		graphs -= 1
 		print("seed =", seed)
 		random.seed(seed)
