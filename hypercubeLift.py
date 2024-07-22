@@ -11,14 +11,14 @@ d = 6
 Ramanujan_bound = 2*sqrt(d-1)
 print("Ramanujan bound =", Ramanujan_bound)
 n = 20
-seed = 0 # starting seed value
-k = int(n/2.5)
+seed = 20 # starting seed value
+k = int(n/3)
 K = 2**k
 inc = 10 # increment of epsilon
 eps = [x/inc for x in range(inc)]
-Graphs = 10 # how many graphs to study
+Graphs = 30 # how many graphs to study
 graphs = Graphs
-trials = 1 # how many lifts to consider per graph
+trials = 10 # how many lifts to consider per graph
 rams = [0,]*inc # how many eps-Ramanujan graphs are gotten in this way
 
 def is_Ramanujan(G, eps=[0]):
@@ -54,6 +54,7 @@ while graphs > 0:
 					lift[v0][u1] = 1
 					"""
 					H.add_edge(u0, v1)
+			"""
 			for v in range(n): # add hypercube edges at each vertex
 				for copy in range(K):
 					u0 = vertex_index(v, copy, n, K)
@@ -61,6 +62,7 @@ while graphs > 0:
 						v0 = vertex_index(v, copy^(2**i), n, K)
 						# lift[u0][v0] = 1
 						H.add_edge(u0, v0)
+			"""
 			new_rams = is_Ramanujan(H, eps)
 			for i in range(inc):
 				rams[i] += new_rams[i]
