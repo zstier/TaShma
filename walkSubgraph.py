@@ -34,7 +34,7 @@ print("created G")
 W = 20 # number of walks to take
 h = 200 # hike length
 
-for k in range(50, 110, 10): # walk length
+for k in range(20, 110, 10): # walk length
 	print("k =", k)
 	lhc = []
 	lwc = []
@@ -56,7 +56,7 @@ for k in range(50, 110, 10): # walk length
 			v = w
 		B = nb(H)
 		
-		"""
+		# """
 		### counting hikes
 		C = B @ np.matrix.transpose(B) # hike matrix for 1 step
 		hikeCounts = []
@@ -66,14 +66,15 @@ for k in range(50, 110, 10): # walk length
 			C = B @ C @ np.matrix.transpose(B) # hike matrix for one additional step
 		# print(hikeCounts)
 		# logHikeCounts = [ log(hikeCounts[k])/(k+2) for k in range(h) ]
-		logHikeCounts = []
+		logHikeCounts = np.array([])
 		i = 0
 		while i < h and hikeCounts[i] >= 0:
-			logHikeCounts.append(0 if hikeCounts[i] == 0 else log(hikeCounts[i])/(i+2))
+			logHikeCounts = np.append(logHikeCounts, [np.nan if hikeCounts[i] == 0 else log(hikeCounts[i])/(i+2)])
 			i += 1
 		lhc.append(logHikeCounts)
-		"""
+		# """
 		
+		# """
 		### counting nb walks
 		A = nx.adjacency_matrix(H)
 		m = H.number_of_nodes()
@@ -93,30 +94,25 @@ for k in range(50, 110, 10): # walk length
 			Nc = Ncnew
 			N1 = N1new
 			# print(Nc)
-		# """
 		# print(walkCounts)
 		logWalkCounts = np.array([])
 		i = 1
 		while walkCounts[i] >= 0 and i < h:
 			logWalkCounts = np.append(logWalkCounts, [np.nan if walkCounts[i] == 0 else log(walkCounts[i])/(i+2)])
 			i += 1
-				
-		""" # code i got from chatgpt for interpolating over gaps
-		nans, x_ = np.isnan(logWalkCounts), lambda z: z.nonzero()[0]
-		logWalkCounts[nans] = np.interp(x_(nans), x_(~nans), logWalkCounts[~nans])
-		"""
 		
 		lwc.append(logWalkCounts)
+		# """
 		
-		
-	"""
 	for hike in lhc:
 		plt.plot(hike)
-	plt.show()
+	# plt.show()
+	plt.savefig("figs/seed"+str(seed)+"h"+str(k))
 	plt.close()
-	"""
+	# """
 	for walk in lwc:
 		plt.plot(walk)
 	# plt.show()
 	plt.savefig("figs/seed"+str(seed)+"w"+str(k))
 	plt.close()
+	# """
